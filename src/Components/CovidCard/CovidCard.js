@@ -53,7 +53,7 @@ const CovidCard = () => {
     setInterval(secondChangeFun, 1000)
 
     return (
-        <div className=' container'>
+        <div className=' container pt-11'>
             <div className=' py-5 '
                 style={{ background: "rgba(255, 255, 255, 0.3)", }}>
                 <div className=' text-center'>
