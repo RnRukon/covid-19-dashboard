@@ -35,7 +35,7 @@ const GlobalChart = ({ GlobalData }) => {
         {
             "name": "TotalRecovered",
             "uv": GlobalData?.Global?.TotalRecovered,
-            "pv": GlobalData?.Global?.TotalConfirmed,
+            "pv": GlobalData?.Global?.TotalRecovered,
 
         }
     ]
