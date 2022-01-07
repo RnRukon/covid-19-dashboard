@@ -32,7 +32,12 @@ const Chart = ({ covidData }) => {
 
     ]
     return (
-        <div className=' flex justify-center'>
+        <div
+            // AOS---------
+            data-aos="flip-left"
+            data-aos-easing="ease-out-cubic"
+            data-aos-duration="2000"
+            className=' flex justify-center'>
 
             <ResponsiveContainer width="90%" height={400}>
                 <ComposedChart width={400} height={400} data={data}>

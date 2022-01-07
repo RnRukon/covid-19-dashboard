@@ -174,7 +174,7 @@ const CovidCard = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div>
+                                <div >
                                     <h3 className=' text-center py-7 text-purple-700'>COVID-19 Chart</h3>
                                     <Chart covidData={covidData} />
                                 </div>

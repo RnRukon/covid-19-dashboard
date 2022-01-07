@@ -40,7 +40,12 @@ const GlobalChart = ({ GlobalData }) => {
         }
     ]
     return (
-        <div className='flex justify-center'>
+        <div
+            // AOS---------
+            data-aos="flip-left"
+            data-aos-easing="ease-out-cubic"
+            data-aos-duration="2000"
+            className='flex justify-center '>
             <ResponsiveContainer width="90%" height={300}>
                 <ComposedChart width={730} height={250} data={data}>
                     <XAxis dataKey="name" />
