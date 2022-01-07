@@ -6,14 +6,17 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { CircularProgress } from '@mui/material';
 import Global from '../Global/Global';
+import Chart from '../Chart/Chart';
 
 
 const CovidCard = () => {
-    const [countries, setCountries] = useState([]);
-    const [covidData, setCovidData] = useState([]);
-
+    // state-------------------------
+    const [countries, setCountries] = useState([]) || '';
+    const [covidData, setCovidData] = useState([]) || '';
     const [GlobalData, setGlobalData] = useState([]) || '';
-    const [singleCounty, setSingleCounty] = useState('')
+    const [singleCounty, setSingleCounty] = useState('') || '';
+    const [secondChange, setSecondChange] = useState('')
+    // Api------------------------------
     const countriesUrl = `https://api.covid19api.com/countries`;
     const CovidUrl = `https://api.covid19api.com/dayone/country/${singleCounty ? singleCounty : 'Bangladesh'}`
     const GlobalUrl = `https://api.covid19api.com/summary`;
@@ -29,7 +32,7 @@ const CovidCard = () => {
         fetch(countriesUrl)
             .then(res => res.json())
             .then(data => setCountries(data))
-    }, [countriesUrl])
+    }, [countriesUrl, setCountries])
 
 
 
@@ -37,9 +40,7 @@ const CovidCard = () => {
         fetch(CovidUrl)
             .then(res => res?.json())
             .then(data => setCovidData(data?.reverse()[0]))
-    }, [CovidUrl])
-
-
+    }, [CovidUrl, setCovidData])
 
 
 
@@ -48,17 +49,16 @@ const CovidCard = () => {
         setSingleCounty(status)
 
     }
-    return (
-        <div >
-            <div className='container  py-5 '
-                style={{
-                    background: "rgba(255, 255, 255, 0.3)",
-                    padding: '40px 20px',
+    const secondChangeFun = () => setSecondChange(new Date().toLocaleTimeString())
+    setInterval(secondChangeFun, 1000)
 
-                }}>
+    return (
+        <div className=' container'>
+            <div className=' py-5 '
+                style={{ background: "rgba(255, 255, 255, 0.3)", }}>
                 <div className=' text-center'>
-                    <small className=' text-pink-500 font-extrabold uppercase'>Last Covid 19 Update</small>
-                    <h5 className=' text-violet-600 font-bold'>{new Date().toDateString()} || {new Date().toLocaleTimeString()}</h5>
+                    <small className=' text-pink-500 font-extrabold uppercase'>Last Covid-19 Update</small>
+                    <h5 className=' text-violet-600 font-bold'>{new Date().toDateString()} || {secondChange}</h5>
                 </div>
 
                 {
@@ -68,79 +68,118 @@ const CovidCard = () => {
                                 <Global GlobalData={GlobalData} />
                             </div>
                             <br />
-                            <hr />
-                            <FormControl sx={{ minWidth: 1 }}>
-                                <InputLabel style={{ color: 'white' }} id="demo-simple-select-autowidth-label">Select County</InputLabel>
-                                <Select
 
-                                    labelId="demo-simple-select-autowidth-label"
-                                    id="demo-simple-select-autowidth"
-                                    value={singleCounty ? singleCounty : 'Bangladesh'}
-                                    onChange={handleChange}
-                                    autoWidth
-                                    label='Select'
-                                >
+                            {/* Form Control  */}
+                            <div className='container'>
+                                <hr />
+                                <FormControl sx={{ minWidth: 1 }}>
+                                    <InputLabel style={{ color: 'white' }} id="demo-simple-select-autowidth-label">Select County</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-autowidth-label"
+                                        id="demo-simple-select-autowidth"
+                                        value={singleCounty ? singleCounty : 'Bangladesh'}
+                                        onChange={handleChange}
+                                        autoWidth
+                                        label='Select'
+                                    >
 
-                                    {
-                                        countries?.map((country, index) =>
-                                            <MenuItem key={index} value={country?.Country}>{country?.Country}</MenuItem>
-                                        )
-                                    }
+                                        {
+                                            countries?.map((country, index) =>
+                                                <MenuItem key={index} value={country?.Country}>{country?.Country}</MenuItem>
+                                            )
+                                        }
 
-                                </Select>
-                            </FormControl>
+                                    </Select>
+                                </FormControl>
+                            </div>
 
                             <div className=' text-center py-1'>
-                                <h2>Coronavirus COVID19 County</h2>
+                                <h2>Coronavirus COVID-19 County</h2>
                                 <div className=' text-center py-1 text-pink-600'>
                                     <h2 className=' text-center '>{covidData?.Country}</h2>
-
                                 </div>
                             </div>
-                            <section class="text-gray-700 body-font">
-                                <div class="container  mx-auto">
+                            <section className="text-gray-700 body-font">
+                                <div className="container  mx-auto">
+                                    <div className="flex flex-wrap  text-center text-white">
+                                        <div
+                                            // AOS---------
+                                            data-aos="flip-left"
+                                            data-aos-easing="ease-out-cubic"
+                                            data-aos-duration="2000"
 
-                                    <div class="flex flex-wrap -m-4 text-center text-white">
-                                        <div class="p-4 md:w-1/4 sm:w-1/2 w-full ">
-                                            <div class="border-2 border-gray-600 px-4 py-6 rounded-lg transform transition duration-500 hover:scale-110  bg-blue-800">
-                                                <i class="fab fa-creative-commons fw-bold text-5xl "></i>
+                                            className="p-4 md:w-1/4 sm:w-1/2 w-full ">
+                                            <div className="border-2 border-gray-600 px-4 py-6 rounded-lg transform transition duration-500 hover:scale-110  bg-blue-800">
 
-                                                <h2 class="
+                                                <i className="fab fa-creative-commons fw-bold text-5xl ">
+                                                </i>
+
+                                                <h2 className="
                                                 title-font
                                                 font-medium text-3xl
                                                 text-white">
                                                     <CountUp start={0} end={covidData?.Active} duration={3} seperator="," />
                                                 </h2>
-                                                <p class="leading-relaxed text-white">Active</p>
+                                                <p className="leading-relaxed text-white">Active</p>
                                             </div>
                                         </div>
                                         {/* ------------------------------ */}
-                                        <div class="p-4 md:w-1/4 sm:w-1/2 w-full">
-                                            <div class="border-2 border-gray-600 px-4 py-6 rounded-lg transform transition duration-500 hover:scale-110 bg-sky-900">
-                                                <i class="far text-red-600 fa-check-circle fw-bold text-5xl"></i>
-                                                <h2 class="title-font font-medium text-3xl ">  <CountUp start={0} end={covidData?.Confirmed} duration={4} seperator="," /></h2>
-                                                <p class="leading-relaxed">Confirmed</p>
+                                        <div
+                                            // AOS ----------------------
+                                            data-aos="flip-right"
+                                            data-aos-easing="ease-out-cubic"
+                                            data-aos-duration="2000"
+                                            className="p-4 md:w-1/4 sm:w-1/2 w-full">
+
+                                            <div
+                                                className="border-2 border-gray-600 px-4 py-6 rounded-lg transform transition duration-500 hover:scale-110 bg-sky-900">
+
+                                                <i className="far text-red-600 fa-check-circle fw-bold text-5xl"></i>
+
+                                                <h2 className="title-font font-medium text-3xl ">  <CountUp start={0} end={covidData?.Confirmed} duration={4} seperator="," /></h2>
+                                                <p className="leading-relaxed">Confirmed</p>
                                             </div>
                                         </div>
                                         {/* ----------------------------------------- */}
-                                        <div class="p-4 md:w-1/4 sm:w-1/2 w-full">
-                                            <div class="border-2 bg-green-500 border-gray-600 px-4 py-6 rounded-lg transform transition duration-500 hover:scale-110">
-                                                <i class="far text- bg-white-600 fa-check-circle fw-bold text-5xl"></i>
-                                                <h2 class="title-font font-medium text-3xl "> <CountUp start={1111000} end={covidData?.Recovered} duration={5} seperator="," /></h2>
-                                                <p class="leading-relaxed">Recovered</p>
+                                        <div
+                                            // AOS -------------------
+                                            data-aos="flip-left"
+                                            data-aos-easing="ease-out-cubic"
+                                            data-aos-duration="2000"
+                                            className="p-4 md:w-1/4 sm:w-1/2 w-full">
+
+                                            <div className="border-2 bg-green-500 border-gray-600 px-4 py-6 rounded-lg transform transition duration-500 hover:scale-110">
+
+                                                <i className="far text- bg-white-600 fa-check-circle fw-bold text-5xl"></i>
+
+                                                <h2 className="title-font font-medium text-3xl "> <CountUp start={1111000} end={covidData?.Recovered} duration={5} seperator="," /></h2>
+                                                <p className="leading-relaxed">Recovered</p>
                                             </div>
                                         </div>
                                         {/* ---------------------------------- */}
-                                        <div class="p-4 md:w-1/4 sm:w-1/2 w-full">
-                                            <div class="border-2 bg-rose-700 border-gray-600 px-4 py-6 rounded-lg transform transition duration-500 hover:scale-110">
-                                                <i class="fas fa-skull-crossbones font-bold text-5xl"></i>
-                                                <h2 class="title-font font-medium text-3xl ">   <CountUp start={155550} end={covidData?.Deaths} duration={6} seperator="," /></h2>
-                                                <p class="leading-relaxed">Deaths</p>
+                                        <div
+                                            // AOS ----------------------------
+                                            data-aos="flip-right"
+                                            data-aos-easing="ease-out-cubic"
+                                            data-aos-duration="2000"
+                                            className="p-4 md:w-1/4 sm:w-1/2 w-full">
+
+                                            <div className="border-2 bg-rose-700 border-gray-600 px-4 py-6 rounded-lg transform transition duration-500 hover:scale-110">
+
+                                                <i className="fas fa-skull-crossbones font-bold text-5xl"></i>
+
+                                                <h2 className="title-font font-medium text-3xl ">   <CountUp start={155550} end={covidData?.Deaths} duration={6} seperator="," /></h2>
+                                                <p className="leading-relaxed">Deaths</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <div>
+                                    <h3 className=' text-center py-7 text-purple-700'>COVID-19 Chart</h3>
+                                    <Chart covidData={covidData} />
+                                </div>
                             </section>
+
                         </div>
 
                 }
