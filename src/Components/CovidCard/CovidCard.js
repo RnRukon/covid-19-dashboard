@@ -7,8 +7,8 @@ import Select from '@mui/material/Select';
 import { CircularProgress } from '@mui/material';
 import Global from '../Global/Global';
 import Chart from '../Chart/Chart';
-
-
+import Fab from '@mui/material/Fab';
+import RefreshIcon from '@mui/icons-material/Refresh';
 const CovidCard = () => {
     // state-------------------------
     const [countries, setCountries] = useState([]) || '';
@@ -49,6 +49,7 @@ const CovidCard = () => {
         setSingleCounty(status)
 
     }
+
     const secondChangeFun = () => setSecondChange(new Date().toLocaleTimeString())
     setInterval(secondChangeFun, 1000)
 
@@ -57,12 +58,22 @@ const CovidCard = () => {
             <div className=' py-5 '
                 style={{ background: "rgba(255, 255, 255, 0.3)", }}>
                 <div className=' text-center'>
-                    <small className=' text-pink-500 font-extrabold uppercase'>Last Covid-19 Update</small>
+                    <small className=' text-pink-500 font-extrabold uppercase'>Covid-19 Last Update</small>
                     <h5 className=' text-violet-600 font-bold'>{new Date().toDateString()} || {secondChange}</h5>
                 </div>
 
                 {
-                    !countries || !covidData ? <CircularProgress color="secondary" /> :
+
+                    !countries || !covidData ? <div style={{ height: '67vh' }} className=' flex justify-center items-center'>
+                        <div className=' text-center'>
+                            <CircularProgress color="secondary" />  <br />
+                            <small className=' text-red-600'>Data Not Found!</small> <br />
+                            <small className=' text-green-600'>Please Refresh</small>
+                            <br />
+                            <Fab size='small' onClick={() => window.location.reload()} color="secondary" aria-label="upload picture" component="span"><RefreshIcon sx={{ fontSize: 30 }} /></Fab>
+                        </div>
+                    </div>
+                        :
                         <div>
                             <div>
                                 <Global GlobalData={GlobalData} />
@@ -81,11 +92,21 @@ const CovidCard = () => {
                                         onChange={handleChange}
                                         autoWidth
                                         label='Select'
+
                                     >
 
                                         {
                                             countries?.map((country, index) =>
-                                                <MenuItem key={index} value={country?.Country}>{country?.Country}</MenuItem>
+                                                <MenuItem key={index} value={country?.Country}>
+                                                    <img
+                                                        loading="lazy"
+                                                        width="20"
+                                                        src={`https://flagcdn.com/w20/${country?.ISO2?.toLowerCase()}.png`}
+                                                        alt=''
+                                                        style={{ display: 'inline', marginRight: '7px' }}
+                                                    />
+                                                    {country?.Country}
+                                                </MenuItem>
                                             )
                                         }
 
@@ -94,9 +115,13 @@ const CovidCard = () => {
                             </div>
 
                             <div className=' text-center py-1'>
-                                <h2>Coronavirus COVID-19 County</h2>
+                                <h2>Coronavirus COVID-19 Country</h2>
                                 <div className=' text-center py-1 text-pink-600'>
-                                    <h2 className=' text-center '>{covidData?.Country}</h2>
+                                    <div>
+                                        <h2 className=' text-center inline m-0'>{covidData?.Country}</h2>
+                                        <img className=' inline w-16 ml-5 mb-3'
+                                            src={`https://flagcdn.com/w20/${covidData?.CountryCode?.toLowerCase()}.png`} alt="" />
+                                    </div>
                                 </div>
                             </div>
                             <section className="text-gray-700 body-font">
@@ -179,12 +204,8 @@ const CovidCard = () => {
                                     <Chart covidData={covidData} />
                                 </div>
                             </section>
-
                         </div>
-
                 }
-
-
             </div >
         </div>
     );
